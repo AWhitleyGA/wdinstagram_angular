@@ -1,6 +1,6 @@
 "use strict";
 
-(function(){
+// (function(){
 angular
   .module("wdinstagram", [
     "ui.router",
@@ -19,13 +19,18 @@ angular
     "$state",
     GramNewControllerFunction
   ])
+  .controller("GramShowController", [
+    "GramFactory",
+    "$stateParams",
+    GramShowControllerFunction
+  ])
   .factory("GramFactory", [
     "$resource",
     GramFactoryFunction
   ])
 
   function GramFactoryFunction($resource) {
-    return $resource("http://localhost:3000/entries")
+    return $resource("http://localhost:3000/entries/:id")
   }
 
   function GramIndexControllerFunction(GramFactory) {
@@ -36,10 +41,14 @@ angular
   function GramNewControllerFunction(GramFactory, $state) {
     this.gram = new GramFactory()
     this.create = function() {
-      GramFactory.save(this.gram, function() {
+      GramFactory.save(this.gram, () => {
         $state.go("gramIndex")
       })
     }
+  }
+
+  function GramShowControllerFunction(GramFactory, $stateParams) {
+    this.gram = GramFactory.get({id: $stateParams.id})
   }
 
   function RouterFunction($stateProvider) {
@@ -56,6 +65,12 @@ angular
       controller: "GramNewController",
       controllerAs: "vm"
     })
+    .state("gramShow", {
+      url: "/grams/:id",
+      templateUrl: "js/ng-views/show.html",
+      controller: "GramShowController",
+      controllerAs: "vm"
+    })
   }
 
-})();
+// })();

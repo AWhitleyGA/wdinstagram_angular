@@ -1,8 +1,8 @@
 <div class="gram-feed">
-  <div class="gram" data-ng-repeat="gram in vm.grams | orderBy: 'updated_at'">
+  <a class="gram" data-ng-repeat="gram in vm.grams | orderBy: 'updated_at'" data-ui-sref="gramShow({id: gram.id})">
     <img ng-src="{{gram.photo_url}}"> <br />
     <h3>{{gram.author}}</h3>
     <i>posted {{gram.created_at | date: "medium" }}; updated {{gram.updated_at | date: "medium"}}</i>
     <p>{{gram.body}}</p>
   </div>
-</div>
+</a>
